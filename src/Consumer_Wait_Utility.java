@@ -1,7 +1,7 @@
 //Class used to implement wait times for consumer
 public class Consumer_Wait_Utility {
 
-    private static final int WAIT_TIME = 10; //Max time to wait is 7 seconds
+    private static final int WAIT_TIME = 4; //Max time to wait is 7 seconds
 
     //Nap function; make consumer wait for random time between 0 and 7 seconds at runtime
     public static void nap(){

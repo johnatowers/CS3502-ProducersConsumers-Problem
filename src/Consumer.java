@@ -1,8 +1,8 @@
 public class Consumer extends Thread {
-    private Semaphore mutex;
-    private Semaphore full;
-    private Semaphore empty;
-    public char consumed = '0';
+    private Semaphore mutex;    //Consumers mutex semaphore
+    private Semaphore full;     //Consumers full semaphore
+    private Semaphore empty;    //Consumers empty semaphore
+    public char consumed = '0'; //Placeholder char variable
 
     //Constructor
     public Consumer(Semaphore m, Semaphore f, Semaphore e) {
@@ -38,18 +38,19 @@ public class Consumer extends Thread {
     //Function used to remove a char from the buffer
     public void removeItem() {
 
-        //If the buffer is empty
+        //If the buffer is empty...
         if (ProdConSync.inBuffer == 0) {
             System.out.println("Buffer is empty.");
             return;
         }
-        //Search the entire array...
-        for (int i = 0; i < ProdConSync.N; i++) {
+
+        //If the buffer is not empty...
+        for (int i = 0; i < ProdConSync.N; i++) {       //Scan all indexes for first full slot
             if (ProdConSync.sharedBuffer[i] != 0) {
-                consumed = ProdConSync.sharedBuffer[i];
-                ProdConSync.sharedBuffer[i] = 0;
-                ProdConSync.removed++;
-                ProdConSync.inBuffer--;
+                consumed = ProdConSync.sharedBuffer[i]; //Use consumed as a placemarker for the removed char
+                ProdConSync.sharedBuffer[i] = 0;        //Reset the index with the removed char to zero
+                ProdConSync.removed++;                  //Increase number removed by one
+                ProdConSync.inBuffer--;                 //Decrease number in buffer by one
                 System.out.println("Consumer removed char '" + consumed + "' from buffer.");
                 System.out.println("                   #in buffer: " + ProdConSync.inBuffer);
                 System.out.println("                      # added: " + ProdConSync.added);
@@ -63,11 +64,11 @@ public class Consumer extends Thread {
 
     //'Destroy' the removed char
     public void consumeItem() {
-        if (ProdConSync.inBuffer == 0) {
+        if (ProdConSync.inBuffer == 0) {        //If not char was removed, skip this step
             return;
         } else {
-            System.out.println("Consumer consumed char '" + consumed + "'");
-            consumed = '0';
+            System.out.println("Consumer consumed char '" + consumed + "'");    //Declare the char destoryed
+            consumed = '0';     //Reset the placeholder to value zero
         }
     }
 }
